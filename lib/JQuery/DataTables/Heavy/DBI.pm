@@ -4,6 +4,7 @@ use MooX::Types::MooseLike::Base qw(:all);
 use Carp;
 with 'JQuery::DataTables::Heavy::Base';
 use SQL::Abstract::Limit;
+use namespace::clean;
 
 sub _get_table_content {
     my ($self)  = @_;

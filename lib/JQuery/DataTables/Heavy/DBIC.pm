@@ -5,6 +5,7 @@ with 'JQuery::DataTables::Heavy::Base';
 use Carp;
 use Scalar::Util qw(blessed);
 use Hash::Merge;
+use namespace::clean;
 
 has '+dbh' => ( is => 'rw', isa => InstanceOf ['DBIx::Class::Schema'] );
 has has_many => ( is => 'rw', isa => Any, default => sub { []; } );
