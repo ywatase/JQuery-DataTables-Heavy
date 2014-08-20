@@ -1,12 +1,9 @@
-package JQuery::DataTable::Heavy::DBI;
+package JQuery::DataTables::Heavy::DBI;
 use Moo;
 use MooX::Types::MooseLike::Base qw(:all);
 use Carp;
-with 'JQuery::DataTable::Heavy::Base';
-use DBI;
+with 'JQuery::DataTables::Heavy::Base';
 use SQL::Abstract::Limit;
-
-has dbh => ( is => 'rw', isa => InstanceOf['DBI::db'], required => 1 );
 
 sub _get_table_content {
     my ($self)  = @_;
@@ -22,9 +19,9 @@ sub _get_table_content {
         = $sql->select( $self->table, \@cols,  $self->where_clause, $self->order_clause, $self->limit, $self->offset);
 
     my $sth = $dbh->prepare($stmt)
-        or croak "Error preparing sql: " . DBI->errstr() . "\nSQL: $sql\n";
+        or croak "Error preparing sql: " . $dbh->errstr() . "\nSQL: $sql\n";
     my $rv = $sth->execute(@bind)
-        or croak "Error executing sql: " . DBI->errstr() . "\nSQL: $sql\nBind: @bind";
+        or croak "Error executing sql: " . $dbh->errstr() . "\nSQL: $sql\nBind: @bind";
 
     my $aaData = $sth->fetchall_arrayref( +{} );
 
@@ -48,8 +45,8 @@ sub _get_total_record_count {
     my ( $stmt, @bind ) = $sql->select( $self->table, ['count(*) AS count'] );
 
     my $sth = $dbh->prepare($stmt)
-        or croak "Error preparing sql: " . DBI->errstr() . "\nSQL: $sql\n";
-    my $rv = $sth->execute() or croak "Error executing sql: " . DBI->errstr() . "\nSQL: $sql\n";
+        or croak "Error preparing sql: " . $dbh->errstr() . "\nSQL: $sql\n";
+    my $rv = $sth->execute() or croak "Error executing sql: " . $dbh->errstr() . "\nSQL: $sql\n";
 
     return $sth->fetchrow_hashref()->{count};
 }
@@ -67,9 +64,9 @@ sub _get_filtered_total {
     my ( $stmt, @bind ) = $sql->select( $self->table, ['count(*) AS count'], $self->where_clause);
 
     my $sth = $dbh->prepare($stmt)
-        or croak "Error preparing sql: " . DBI->errstr() . "\nSQL: $sql\n";
+        or croak "Error preparing sql: " . $dbh->errstr() . "\nSQL: $sql\n";
     my $rv = $sth->execute(@bind)
-        or croak "Error executing sql: " . DBI->errstr() . "\nSQL: $sql\nBind: @bind";
+        or croak "Error executing sql: " . $dbh->errstr() . "\nSQL: $sql\nBind: @bind";
     return $sth->fetchrow_hashref()->{count};
 }
 

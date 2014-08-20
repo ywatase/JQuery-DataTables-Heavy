@@ -1,7 +1,6 @@
 #/usr/bin/env perl
-#===============================================================================
-#Last Modified:  2013/02/08
-#===============================================================================
+use lib '.';
+use t::Utils;
 use Test::More;
 use Test::Exception;
 use Test::Mock::Guard qw(mock_guard);
@@ -15,12 +14,6 @@ BEGIN{
     my $guard2 = mock_guard( 'DBIx::Class::ResultSet', { new => sub { bless {} => shift}});
     my $dbh = DBIx::Class::Schema->new;
     my $rs = DBIx::Class::ResultSet->new;
-    my $attr = {
-        param => {},
-        dbh => $dbh,
-        table => $rs,
-    };
-
 
     subtest 'new' => sub {
         throws_ok { JQuery::DataTables::Heavy::DBIC->new } qr/dbh,\sparam,\stable/, 'required params';
@@ -34,6 +27,12 @@ BEGIN{
                     table => 'table',
                     param => 'param',
                 })}  qr/HashRef/, q{'param' validation};
+    };
+
+    my $attr = {
+        param => {},
+        dbh   => $dbh,
+        table => $rs,
     };
 
     test__hashed_has_many($attr, ['hoge'], { hoge => 'hoge' });
@@ -64,18 +63,22 @@ BEGIN{
     }
     {
         my $guard3 = mock_guard( 'JQuery::DataTables::Heavy::DBIC', { where_fields => sub {['hoge.col1', 'fuga.a.col2', 'fuga.b.col3', 'fuga.c.d.col4']}});
-        test__generate_prefetch_clause_for_where_clause($attr, 
+        test__generate_prefetch_clause_for_where_clause($attr,
             ['hoge', { foo => 'bar'}, {fuga => ['a', 'b', { c => 'd'} ]} ],
             [{fuga => ['a', 'b', { c => 'd'}]}, 'hoge'],
         );
     }
     {
         my $guard3 = mock_guard( 'JQuery::DataTables::Heavy::DBIC', { where_fields => sub {['hoge.col1', 'fuga.c.d.col4']}});
-        test__generate_prefetch_clause_for_where_clause($attr, 
+        test__generate_prefetch_clause_for_where_clause($attr,
             ['hoge', { foo => 'bar'}, {fuga => ['a', 'b', { c => 'd'} ]} ],
             [{fuga => { c => 'd'}}, 'hoge'],
         );
     }
+    t::Utils->base_test(
+        JQuery::DataTables::Heavy::DBIC->new($attr),
+        'v1_9.dat',
+    );
 }
 
 sub test__generate_prefetch_clause_for_where_clause {
