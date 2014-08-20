@@ -8,6 +8,9 @@ our $VERSION = "0.01";
 use Moo;
 use MooX::Types::MooseLike::Base qw(:all);
 use Carp;
+use Class::Load ();
+use namespace::clean;
+
 
 has subclass => ( is => 'lazy', isa => ConsumerOf [ __PACKAGE__ . '::Base' ] );
 has args => ( is => 'ro', isa => HashRef, required => 1 );
@@ -24,10 +27,7 @@ around BUILDARGS => sub {
 sub _build_subclass {
     my ($self) = @_;
     my $subclass = dispatch_subclass( $self->args->{dbh} );
-    eval "require $subclass";
-    if ($@) {
-        croak("Can't load $subclass: $@");
-    }
+    Class::Load::load_class($subclass);
     return $subclass->new( $self->args );
 }
 
