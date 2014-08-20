@@ -232,11 +232,13 @@ __END__
 
 =head1 NAME
 
-JQuery::DataTables::Heavy::Base - 
+JQuery::DataTables::Heavy::Base - Base Role
 
 =head1 SYNOPSIS
 
-  JQuery::DataTables::Heavy::Base - 
+  package JQuery::DataTables::Heavy::DBIC;
+  use Moo;
+  with 'JQuery::DataTables::Heavy::Base';
 
 =head1 DESCRIPTION
 
@@ -244,7 +246,8 @@ JQuery::DataTables::Heavy::Base -
 
 =head1 PREREQUISITES
 
-C<Moo>
+L<Moo>, L<MooX::Types::MooseLike::Base>, L<Hash::Merge>, L<Clone>
+
 
 =head1 Author
 
