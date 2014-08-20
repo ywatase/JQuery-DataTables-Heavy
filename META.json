@@ -4,7 +4,7 @@
       "Yusuke Watase <ywatase@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.7.4, CPAN::Meta::Converter version 2.132830",
+   "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.132830",
    "license" : [
       "perl_5"
    ],
@@ -43,15 +43,31 @@
       },
       "runtime" : {
          "requires" : {
+            "Class::Load" : "0",
+            "Hash::Merge" : "0",
+            "Moo" : "0",
+            "MooX::Types::MooseLike" : "0",
             "perl" : "5.008005"
          }
       },
       "test" : {
          "requires" : {
+            "Test::Mock::Guard" : "0.09",
             "Test::More" : "0.98"
          }
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/ywatase/JQuery-DataTables-Heavy/issues"
+      },
+      "homepage" : "https://github.com/ywatase/JQuery-DataTables-Heavy",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/ywatase/JQuery-DataTables-Heavy.git",
+         "web" : "https://github.com/ywatase/JQuery-DataTables-Heavy"
+      }
+   },
    "version" : "0.01"
 }
