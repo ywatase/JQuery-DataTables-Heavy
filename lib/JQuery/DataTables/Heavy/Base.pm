@@ -32,7 +32,7 @@ sub _build_fields {
 
 sub _build_table_cols {
     my ($self) = @_;
-    my @cols = map {s/\A.*\.(?=[^\.]+\.[^\.]+\z)//smxr} @{ $self->fields };
+    my @cols = map {(my $s = $_) =~ s/\A.*\.(?=[^\.]+\.[^\.]+\z)//smx; $s} @{ $self->fields };
     return \@cols;
 }
 
