@@ -76,7 +76,7 @@ sub _get_table_content {
                 $rel_rs->result_class('DBIx::Class::ResultClass::HashRefInflator');
                 $h->{$rel_name} = [ $rel_rs->all ];
             }
-            push $aoData, $self->_merge_data_default($h);
+            push @$aoData, $self->_merge_data_default($h);
         }
     }
     else {
